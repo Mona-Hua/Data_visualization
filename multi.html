@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+  <!-- Import vega-embed -->
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+<h1>Multiple Visualisations</h1>
+
+<h2>This is the first visualisation</h2>
+<p>The first map uses 2019 GDP data from the World Bank. Within the range of countries included, dark blue is the country with the highest GDP, which means that the country is in a good fiscal position for 2019 and its people have a high standard of living. Bright green means that the country has the lowest GDP and is concentrated on the African continent on the map.GDP data can tell the user visually about a country's financial situation, but it is not accurate because it does not take into account the country's population size.</p>
+<div id="vis1"></div>
+
+<h2>This is the second visualisation</h2>
+<p>The second one is a bubble map, the x-axis shows the country's population number and the y-axis is the 2019 GDP. the size of the circle means the country's GDP number as a percentage of the total world GDP. When the point has a smaller x-value and a higher y-value it means that the country represented by the point has a higher GDP per capita.</p>
+<div id="vis2"></div>
+
+<script type="text/javascript">
+  var specVis1= {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 800,
+  "height": 600,
+  "projection": {"type": "equalEarth"},
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/worldtopo.json",
+        "format": {"type": "topojson", "feature": "world"}
+      },
+      "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"}
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/worldtopo.json",
+        "format": {"type": "topojson", "feature": "world"}
+      },
+      "transform": [
+        {
+          "lookup": "properties.admin",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/GDP.csv",
+              "format": {"type": "csv"}
+            },
+            "key": "Country",
+            "fields": ["2019_GDP"]
+          }
+        }
+      ],
+      "mark": "geoshape",
+      "projection": {"type": "mercator"},
+      "encoding": {"color": {"field": "2019_GDP", "type": "quantitative"}}
+    }
+  ]
+};
+  var specVis2 = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 500,
+  "height": 400,
+  "title": "GDP",
+  "data": {
+    "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/GDP.csv"
+  },
+  "selection": {
+    "continent_highlight": {
+      "type": "multi",
+      "fields": ["Continent"],
+      "bind": "legend"
+    }
+  },
+  "mark": "circle",
+  "encoding": {
+    "x": {"field": "Population", "type": "quantitative", "title": "Population"},
+    "y": {
+      "field": "2019_GDP",
+      "type": "quantitative",
+      "title": "2019 GDP (billion USD)"
+    },
+    "color": {"field": "Continent", "type": "nominal"},
+    "opacity": {
+      "condition": {"selection": "continent_highlight", "value": 0.6},
+      "value": 0.2
+    },
+    "size": {
+      "field": "Share",
+      "type": "quantitative",
+      "scale": {
+        "type": "threshold",
+        "domain": [0.25, 0.5, 0.75, 1],
+        "range": [80, 150, 500, 900, 1200]
+      },
+      "legend": {"format": ".3s"},
+      "tooltip": [
+        {"field": "Country", "type": "nominal"},
+        {"field": "Population", "type": "quantitative", "format": ","},
+        {"field": "2019_GDP", "type": "quantitative", "format": ","}
+      ]
+    }
+  }
+};
+  
+
+  vegaEmbed('#vis1', specVis1).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+  
+   vegaEmbed('#vis2', specVis2).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+</script>
+</body>
+</html>
