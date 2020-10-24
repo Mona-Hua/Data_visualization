@@ -1,0 +1,46 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 500,
+  "height": 400,
+  "title": "GDP",
+  "data": {
+    "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/GDP.csv"
+  },
+  "selection": {
+    "continent_highlight": {
+      "type": "multi",
+      "fields": ["Continent"],
+      "bind": "legend"
+    }
+  },
+  "mark": "circle",
+  "encoding": {
+    "x": {"field": "Population", "type": "quantitative", "title": "Population"},
+    "y": {
+      "field": "2019_GDP",
+      "type": "quantitative",
+      "title": "2019 GDP (billion USD)"
+    },
+    "color": {"field": "Continent", "type": "nominal"},
+    "opacity": {
+      "condition": {"selection": "continent_highlight", "value": 0.6},
+      "value": 0.2
+    },
+    "size": {
+      "field": "Share",
+      "type": "quantitative",
+      "scale": {
+        "type": "threshold",
+        "domain": [0.25, 0.5, 0.75, 1],
+        "range": [80, 150, 500, 900, 1200]
+      },
+      "legend": {"format": ".3s"},
+      "tooltip": [
+        {"field": "Country", "type": "nominal"},
+        {"field": "Population", "type": "quantitative", "format": ","},
+        {"field": "2019_GDP", "type": "quantitative", "format": ","}
+      ]
+    }
+  },
+  "config": {}
+}
