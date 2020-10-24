@@ -1,0 +1,38 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 800,
+  "height": 600,
+  "projection": {"type": "equalEarth"},
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/worldtopo.json",
+        "format": {"type": "topojson", "feature": "world"}
+      },
+      "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"}
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/worldtopo.json",
+        "format": {"type": "topojson", "feature": "world"}
+      },
+      "transform": [
+        {
+          "lookup": "properties.admin",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/GDP.csv",
+              "format": {"type": "csv"}
+            },
+            "key": "Country",
+            "fields": ["2019_GDP"]
+          }
+        }
+      ],
+      "mark": "geoshape",
+      "projection": {"type": "mercator"},
+      "encoding": {"color": {"field": "2019_GDP", "type": "quantitative"}}
+    }
+  ],
+  "config": {}
+}
