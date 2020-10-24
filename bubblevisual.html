@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vega-Lite Bar Chart</title>
+  <meta charset="utf-8">
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.17.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.17.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.12.2"></script>
+
+  <style media="screen">
+    /* Add space between Vega-Embed links  */
+    .vega-actions a {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Map Visualization</h1>
+  <div>See code at <a href="https://github.com/Mona-Hua/FIT3179/blob/main/bubblevisualization.vl.json">https://github.com/Mona-Hua/FIT3179/blob/main/bubblevisualization.vl.json</a></div>
+  <!-- Container for the visualization -->
+  <div id="vis"></div>
+
+  <script>
+  // Assign the specification to a local variable vlSpec.
+  var vlSpec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 500,
+  "height": 400,
+  "title": "GDP",
+  "data": {
+    "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/GDP.csv"
+  },
+  "selection": {
+    "continent_highlight": {
+      "type": "multi",
+      "fields": ["Continent"],
+      "bind": "legend"
+    }
+  },
+  "mark": "circle",
+  "encoding": {
+    "x": {"field": "Population", "type": "quantitative", "title": "Population"},
+    "y": {
+      "field": "2019_GDP",
+      "type": "quantitative",
+      "title": "2019 GDP (billion USD)"
+    },
+    "color": {"field": "Continent", "type": "nominal"},
+    "opacity": {
+      "condition": {"selection": "continent_highlight", "value": 0.6},
+      "value": 0.2
+    },
+    "size": {
+      "field": "Share",
+      "type": "quantitative",
+      "scale": {
+        "type": "threshold",
+        "domain": [0.25, 0.5, 0.75, 1],
+        "range": [80, 150, 500, 900, 1200]
+      },
+      "legend": {"format": ".3s"},
+      "tooltip": [
+        {"field": "Country", "type": "nominal"},
+        {"field": "Population", "type": "quantitative", "format": ","},
+        {"field": "2019_GDP", "type": "quantitative", "format": ","}
+      ]
+    }
+  }
+};
+
+  // optional argument passed to Vega-Embed to specify Vega-Lite spec. More info at https://github.com/vega/vega-embed
+  var opt = {
+    "mode": "vega-lite"
+  };
+
+  // Embed the visualization in the container with id `vis`
+  vegaEmbed("#vis", vlSpec, opt).then(function(result) {
+    // Callback receiving the View instance and parsed Vega spec
+    // result.view is the View, which resides under the '#vis' element
+  }).catch(console.warn);
+  </script>
+</body>
+</html>
