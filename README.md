@@ -1,2 +1,3 @@
 # FIT3179
-This file is FIT3179 assignment.
+Final HTML: https://mona-hua.github.io/FIT3179/final.html
+All plots appear in the visual file.
