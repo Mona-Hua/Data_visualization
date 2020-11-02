@@ -1,0 +1,39 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/Mona-Hua/FIT3179/main/eco.csv"
+  },
+  "mark": "rect",
+  "width": 300,
+  "height": 200,
+  "encoding": {
+    "x": {
+      "bin": {"maxbins": 10},
+      "field": "2018population",
+      "type": "quantitative",
+      "title": "Population"
+    },
+    "y": {
+      "bin": {"maxbins": 10},
+      "field": "2018gdp",
+      "type": "quantitative",
+      "title": "Total GDP in 2018"
+    },
+    "tooltip": [
+      {"field": "Country Name", "type": "nominal"},
+      {"field": "2018population", "type": "quantitative", "format": ","},
+      {
+        "field": "2019unemployment",
+        "type": "quantitative",
+        "format": ",",
+        "title": "Unemployment Rate"
+      }
+    ],
+    "color": {
+      "field": "2019unemployment",
+      "type": "quantitative",
+      "title": "Unemployment Rate"
+    }
+  },
+  "config": {"view": {"stroke": "transparent"}}
+}

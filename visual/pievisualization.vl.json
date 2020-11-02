@@ -1,0 +1,31 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "title": "2019 gdp",
+  "data": {
+    "values": [
+      {"category": "Asia", "value": "31874.196"},
+      {"category": "North America", "value": "24985.935"},
+      {"category": "Europe", "value": "22246.631"},
+      {"category": "Oceania", "value": "1615.236"},
+      {"category": "Africa", "value": "2404.234"},
+      {"category": "South America", "value": "3472.592"}
+    ]
+  },
+  "layer": [
+    {"mark": {"type": "arc", "innerRadius": 20, "stroke": "#fff"}},
+    {
+      "mark": {"type": "text", "radiusOffset": 10},
+      "encoding": {"text": {"field": "category", "type": "nominal"}}
+    }
+  ],
+  "encoding": {
+    "theta": {"field": "value", "type": "quantitative", "stack": true},
+    "radius": {
+      "field": "value",
+      "scale": {"type": "sqrt", "zero": true, "rangeMin": 20}
+    },
+    "color": {"field": "category", "type": "nominal", "legend": null}
+  },
+  "view": {"stroke": null},
+  "config": {}
+}
